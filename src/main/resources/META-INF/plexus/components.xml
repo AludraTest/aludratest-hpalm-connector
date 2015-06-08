@@ -1,0 +1,30 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.aludratest.hpalm.impl.HpAlmConfiguration</role>
+      <role-hint>default</role-hint>
+      <implementation>org.aludratest.hpalm.impl.HpAlmConfigurationImpl</implementation>
+      <description></description>
+      <isolated-realm>false</isolated-realm>
+    </component>
+    <component>
+      <role>org.aludratest.scheduler.RunnerListener</role>
+      <role-hint>hpalm</role-hint>
+      <implementation>org.aludratest.hpalm.listener.HpAlmTestListener</implementation>
+      <description></description>
+      <isolated-realm>false</isolated-realm>
+      <requirements>
+        <requirement>
+          <role>org.aludratest.hpalm.TestCaseIdResolver</role>
+          <role-hint></role-hint>
+          <field-name>idResolver</field-name>
+        </requirement>
+        <requirement>
+          <role>org.aludratest.hpalm.impl.HpAlmConfiguration</role>
+          <role-hint></role-hint>
+          <field-name>configuration</field-name>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>

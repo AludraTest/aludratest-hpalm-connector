@@ -1,0 +1,2 @@
+org.aludratest.hpalm.TestCaseIdResolver=org.aludratest.hpalm.impl.DefaultTestCaseIdResolver
+org.aludratest.hpalm.impl.HpAlmConfiguration=org.aludratest.hpalm.impl.HpAlmConfigurationImpl
