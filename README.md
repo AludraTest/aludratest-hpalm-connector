@@ -55,7 +55,7 @@ It will be a common task to set the test set name per test execution. For this p
 set name e.g. via Maven command line:
 
 ```
-mvn test -DALUDRATEST_CONFIG/hpalm/testSetName=Tests 2015-04-01
+mvn test -DALUDRATEST_CONFIG/hpalm/testSetName=Tests\ 2015-04-01
 ```
 
 (obviously, you would script this to use the current date).
