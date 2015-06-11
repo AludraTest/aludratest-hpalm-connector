@@ -1,6 +1,12 @@
 aludratest-hpalm-connector
 ==========================
 
+## Build Status
+
+[![Build Status](https://travis-ci.org/AludraTest/aludratest-hpalm-connector.svg?branch=master)](https://travis-ci.org/AludraTest/aludratest-hpalm-connector)
+
+## Description
+
 This module allows to write test execution results to HP ALM. A link to the HP ALM tests and configurations is 
 established via IDs, which are derived from annotations and / or test names. See below for customization of this
 mechanism.
