@@ -40,6 +40,8 @@ package org.aludratest.hpalm.entity;
 
  */
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -116,6 +118,49 @@ public class Entity {
 
 	public long getId() {
 		return getLongFieldValue("id");
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getType()).append(" (");
+
+		for (Field field : getFields().getFieldList()) {
+			if (sb.charAt(sb.length() - 1) != '(') {
+				sb.append(", ");
+			}
+
+			sb.append(field.getName()).append(" = ");
+			List<String> values = field.getValue();
+			if (values == null || values.isEmpty()) {
+				sb.append("null");
+			}
+			else if (values.size() == 1) {
+				String val = values.get(0);
+				if (val == null) {
+					sb.append("null");
+				}
+				else {
+					sb.append("\"").append(val).append("\"");
+				}
+			}
+			else {
+				sb.append("[");
+				for (String val : values) {
+					if (val == null) {
+						sb.append("null");
+					}
+					else {
+						sb.append("\"").append(val).append("\"");
+					}
+				}
+				sb.append("]");
+			}
+		}
+
+		sb.append(")");
+
+		return sb.toString();
 	}
 
 }
