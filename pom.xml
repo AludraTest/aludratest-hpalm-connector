@@ -9,6 +9,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skip.staging>false</skip.staging>
 	</properties>
 
 	<dependencies>
@@ -67,6 +68,7 @@
 					<serverId>ossrh</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+					<skipNexusStagingDeployMojo>${skip.staging}</skipNexusStagingDeployMojo>
 				</configuration>
 			</plugin>
 
