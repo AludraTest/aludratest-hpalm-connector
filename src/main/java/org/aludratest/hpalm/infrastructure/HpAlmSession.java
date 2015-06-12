@@ -247,12 +247,16 @@ public class HpAlmSession {
 		}
 	}
 
-	public void deleteEntity(Entity entity) throws IOException, HpAlmException {
-		Response response = connector.httpDelete(connector.buildEntityCollectionUrl(entity.getType()) + "/" + entity.getId(),
+	public void deleteEntity(String entityType, long id) throws IOException, HpAlmException {
+		Response response = connector.httpDelete(connector.buildEntityCollectionUrl(entityType) + "/" + id,
 				XML_ACCEPT_HEADER);
 		if (response.getStatusCode() != HttpStatus.SC_OK) {
 			raiseHpAlmException(response);
 		}
+	}
+
+	public void deleteEntity(Entity entity) throws IOException, HpAlmException {
+		deleteEntity(entity.getType(), entity.getId());
 	}
 
 	public Entity createAttachment(Entity entity, String fileName, InputStream attachmentData) throws IOException, HpAlmException {
