@@ -79,6 +79,20 @@ public class HpAlmInteractionImpl implements Interaction, HpAlmInteraction {
 	}
 
 	@Override
+	public Entity createEntity(EntityType entityType, Entity value) {
+		try {
+			value.setType(entityType.getHpAlmTypeName());
+			return session.createEntity(value);
+		}
+		catch (IOException e) {
+			throw new AccessFailure("Could not create entity of type " + entityType, e);
+		}
+		catch (HpAlmException e) {
+			throw new AutomationException("Could not create entity of type " + entityType, e);
+		}
+	}
+
+	@Override
 	public void updateEntity(EntityType entityType, long id, Entity value) {
 		try {
 			session.updateEntity(id, value);
