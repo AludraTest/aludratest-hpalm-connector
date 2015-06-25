@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.aludratest</groupId>
 	<artifactId>aludratest-hpalm-connector</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>AludraTest HP ALM Connector</name>
 	<description>Exports AludraTest test results to HP ALM via REST API.</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<skip.staging>false</skip.staging>
-		<aludratest.version>3.0.0-SNAPSHOT</aludratest.version>
+		<aludratest.version>3.0.0</aludratest.version>
 	</properties>
 
 	<dependencies>
