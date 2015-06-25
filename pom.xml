@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.aludratest</groupId>
 	<artifactId>aludratest-hpalm-connector</artifactId>
@@ -9,9 +8,37 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<skip.staging>false</skip.staging>
 		<aludratest.version>3.0.0</aludratest.version>
 	</properties>
+	
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>aludratest.org</name>
+		<url>http://www.aludratest.org/</url>
+	</organization>
+	
+	<url>http://www.aludratest.org/</url>
+
+	<developers>
+		<developer>
+			<name>Florian Albrecht</name>
+			<id>falbrech-hsdg</id>
+			<organization>Hamburg Sud</organization>
+			<organizationUrl>http://www.hamburgsud.com/</organizationUrl>
+			<timezone>+1</timezone>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+				<role>administrator</role>
+			</roles>
+		</developer>
+	</developers>
 
 	<dependencies>
 		<dependency>
@@ -54,24 +81,10 @@
 			<version>8.1.16.v20140903</version>
 			<scope>test</scope>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.3</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -93,7 +106,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>			
+			</plugin>
 
 			<!-- generate components.xml for Plexus -->
 			<plugin>
@@ -122,7 +135,7 @@
 					<fail>true</fail>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
@@ -150,6 +163,25 @@
 					</execution>
 
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.4</version>
+				<configuration>
+					<!-- site deployment is handled by GitHub plugin, so disable it here -->
+					<skipDeploy>true</skipDeploy>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<goals>deploy site-deploy</goals>
+				</configuration>
 			</plugin>
 		</plugins>
 
@@ -182,7 +214,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
