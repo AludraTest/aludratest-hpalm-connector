@@ -546,10 +546,13 @@ public class HpAlmTestListener extends AbstractRunnerListener {
 						writeTestRun(session, data, testSetId, data.hpAlmId, data.hpAlmConfigId);
 					}
 					catch (IOException e) {
-						LOG.error("Could not write test case to HP ALM", e);
+						LOG.error("Could not write test case "
+								+ (data != null ? (data.hpAlmId + "/" + data.hpAlmConfigId) : "(unknown)")
+								+ " to HP ALM", e);
 					}
 					catch (HpAlmException e) {
-						LOG.error("Could not write test case to HP ALM", e);
+						LOG.error("Could not write test case "
+								+ (data != null ? (data.hpAlmId + "/" + data.hpAlmConfigId) : "(unknown)") + " to HP ALM", e);
 					}
 				}
 			}
