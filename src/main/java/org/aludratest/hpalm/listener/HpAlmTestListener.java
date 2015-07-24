@@ -248,6 +248,7 @@ public class HpAlmTestListener extends AbstractRunnerListener {
 			case FAILEDACCESS:
 			case FAILEDAUTOMATION:
 			case FAILEDPERFORMANCE:
+			case INCONCLUSIVE:
 				lastStep.setStatus(RunStepStatus.FAILED);
 				// do not update status of BLOCKED runs
 				if (!RunStepStatus.BLOCKED.displayName().equals(data.testRunBuilder.create().getStringFieldValue("status"))) {
