@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.aludratest</groupId>
 	<artifactId>aludratest-hpalm-connector</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<name>AludraTest HP ALM Connector</name>
 	<description>Exports AludraTest test results to HP ALM via REST API.</description>
 
@@ -308,7 +308,7 @@
 		<connection>scm:git:https://git@github.com:AludraTest/aludratest-hpalm-connector.git</connection>
 		<developerConnection>scm:git:https://git@github.com/AludraTest/aludratest-hpalm-connector.git</developerConnection>
 		<url>https://github.com/AludraTest/aludratest-hpalm-connector.git</url>
-		<tag>HEAD</tag>
+		<tag>aludratest-hpalm-connector-1.0.2</tag>
 	</scm>
 
 	<issueManagement>
