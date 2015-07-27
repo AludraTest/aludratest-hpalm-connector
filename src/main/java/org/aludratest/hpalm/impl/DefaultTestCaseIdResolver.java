@@ -37,9 +37,9 @@ import org.aludratest.scheduler.node.RunnerLeaf;
  * @author falbrech */
 public class DefaultTestCaseIdResolver implements TestCaseIdResolver {
 
-	private static final Pattern PATTERN_ID = Pattern.compile("(^|[^C])ID_([0-9]{1,6})_");
+	private static final Pattern PATTERN_ID = Pattern.compile("(^|[^C])ID_([0-9]{1,6})(_|$)");
 
-	private static final Pattern PATTERN_CONFIG_ID = Pattern.compile("CID_([0-9]{1,6})_");
+	private static final Pattern PATTERN_CONFIG_ID = Pattern.compile("CID_([0-9]{1,6})(_|$)");
 
 	@Override
 	public Long getHpAlmTestId(RunnerLeaf testCase) {
