@@ -18,10 +18,10 @@ package org.aludratest.hpalm.service;
 import org.aludratest.hpalm.entity.Entity;
 import org.aludratest.hpalm.infrastructure.EntityCollection;
 import org.aludratest.hpalm.infrastructure.ServerTime;
-import org.aludratest.impl.log4testing.ElementName;
-import org.aludratest.impl.log4testing.ElementType;
-import org.aludratest.impl.log4testing.TechnicalLocator;
+import org.aludratest.service.ElementName;
+import org.aludratest.service.ElementType;
 import org.aludratest.service.Interaction;
+import org.aludratest.service.TechnicalLocator;
 
 public interface HpAlmInteraction extends Interaction {
 
