@@ -86,4 +86,9 @@ public class HpAlmConfigurationImpl implements HpAlmConfiguration {
 		return preferences.getBooleanValue("writeDescriptionAndAttachments", true);
 	}
 
+	@Override
+	public boolean isWriteSteps() {
+		return preferences.getBooleanValue("writeSteps", true);
+	}
+
 }

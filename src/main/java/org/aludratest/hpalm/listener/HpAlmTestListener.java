@@ -596,28 +596,31 @@ public class HpAlmTestListener extends AbstractRunnerListener {
 				session.deleteEntity(e);
 			}
 
-			// create the Test Steps
-			Set<String> addedStepNames = new HashSet<String>();
 			long testRunId = testRun.getId();
-			for (TestStepData step : data.testSteps) {
-				RunStepBuilder stepBuilder = step.runStepBuilder.setTestRunId(testRunId);
-				if (configuration.isWriteDescriptionAndAttachments()) {
-					stepBuilder.setDescription(step.sbDescription.toString());
-				}
 
-				Entity stepEntity = stepBuilder.create();
-				stepEntity = session.createEntity(stepEntity);
-
-				// attach attachments
-				if (configuration.isWriteDescriptionAndAttachments()) {
-					int attachmentCount = 0;
-					for (Attachment attachment : step.attachments) {
-						String fileName = "attachment_" + (++attachmentCount) + "." + attachment.getFileExtension();
-						session.createAttachment(stepEntity, fileName, new ByteArrayInputStream(attachment.getFileData()));
+			// create the Test Steps, if enabled
+			if (configuration.isWriteSteps()) {
+				Set<String> addedStepNames = new HashSet<String>();
+				for (TestStepData step : data.testSteps) {
+					RunStepBuilder stepBuilder = step.runStepBuilder.setTestRunId(testRunId);
+					if (configuration.isWriteDescriptionAndAttachments()) {
+						stepBuilder.setDescription(step.sbDescription.toString());
 					}
-				}
 
-				addedStepNames.add(stepEntity.getStringFieldValue("name"));
+					Entity stepEntity = stepBuilder.create();
+					stepEntity = session.createEntity(stepEntity);
+
+					// attach attachments
+					if (configuration.isWriteDescriptionAndAttachments()) {
+						int attachmentCount = 0;
+						for (Attachment attachment : step.attachments) {
+							String fileName = "attachment_" + (++attachmentCount) + "." + attachment.getFileExtension();
+							session.createAttachment(stepEntity, fileName, new ByteArrayInputStream(attachment.getFileData()));
+						}
+					}
+
+					addedStepNames.add(stepEntity.getStringFieldValue("name"));
+				}
 			}
 
 			// update Test Instance status
