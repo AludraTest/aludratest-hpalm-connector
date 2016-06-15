@@ -74,7 +74,15 @@ public class HpAlmSession {
 
 	public static HpAlmSession create(String serverUrl, String domain, String project, String userName, String password)
 			throws IOException, HpAlmException {
+		return create(serverUrl, domain, project, userName, password, 60000, 60000);
+	}
+
+	public static HpAlmSession create(String serverUrl, String domain, String project, String userName, String password,
+			int connectTimeout, int requestTimeout)
+			throws IOException, HpAlmException {
 		RestConnector connector = new RestConnector(new HashMap<String, String>(), serverUrl, domain, project);
+		connector.setConnectTimeout(connectTimeout);
+		connector.setRequestTimeout(requestTimeout);
 
 		// query is-authenticated
 		Response response = connector.httpGet(connector.buildUrl("rest/is-authenticated"), null, XML_ACCEPT_HEADER);

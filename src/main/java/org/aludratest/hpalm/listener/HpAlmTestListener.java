@@ -441,7 +441,8 @@ public class HpAlmTestListener extends AbstractRunnerListener {
 			HpAlmSession session;
 			try {
 				session = HpAlmSession.create(configuration.getHpAlmUrl(), configuration.getDomain(),
-						configuration.getProject(), configuration.getUserName(), configuration.getPassword());
+						configuration.getProject(), configuration.getUserName(), configuration.getPassword(),
+						configuration.getConnectTimeout(), configuration.getRequestTimeout());
 			}
 			catch (IOException e) {
 				LOG.error("Could not connect to HP ALM", e);

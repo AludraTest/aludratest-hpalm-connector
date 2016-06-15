@@ -17,8 +17,13 @@ package org.aludratest.hpalm.infrastructure;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.Collections;
 import java.util.TimeZone;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.aludratest.hpalm.entity.Entity;
 import org.aludratest.hpalm.entity.Field;
@@ -26,6 +31,9 @@ import org.aludratest.hpalm.entity.TestInstanceBuilder;
 import org.aludratest.hpalm.testutil.DefaultHpAlmServlet;
 import org.aludratest.hpalm.testutil.DefaultTimeEndpoint;
 import org.aludratest.hpalm.testutil.MockingTestServer;
+import org.aludratest.hpalm.testutil.ResponseXmlBuilder;
+import org.eclipse.jetty.http.HttpException;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class HpAlmSessionTest {
@@ -83,4 +91,79 @@ public class HpAlmSessionTest {
 		server.stopServer();
 	}
 
+	@Test
+	public void testConnectTimeout() throws Exception {
+		// should throw a Connect Timeout Exception after 5 seconds
+		long start = System.currentTimeMillis();
+		try {
+			// try to connect to a non-routeable address
+			HpAlmSession.create("http://10.255.255.1:8080/somePath", "test", "test", "test", "test", 1000, 0);
+			Assert.fail("Expected Connection Timeout, but nothing thrown");
+		}
+		catch (SocketTimeoutException e) {
+			// OK, the kind of exception we expected
+			long waitTime = System.currentTimeMillis() - start;
+			Assert.assertTrue(waitTime >= 1000 && waitTime < 5000);
+		}
+	}
+
+	// uses connect timeout, but should not fail, because connection should be fast enough
+	// (ensures that connection timeout is not used for something else)
+	@Test
+	public void testPositiveWithConnectTimeout() throws Exception {
+		MockingTestServer server = new MockingTestServer();
+
+		DefaultHpAlmServlet servlet = new DefaultHpAlmServlet();
+		server.setHpAlmServlet(servlet);
+
+		// use an endpoint which is a little bit slower - must not raise CONNECT timeout
+		servlet.setTimeEndpoint(slowTimeEndpoint);
+
+		server.startServer();
+
+		String url = server.getBaseUrl();
+		HpAlmSession session = HpAlmSession.create(url, "DEFAULT", "Test", "test1", "test1234", 1000, 0);
+		session.determineServerTimeZone();
+	}
+
+	@Test
+	public void testRequestTimeout() throws Exception {
+		MockingTestServer server = new MockingTestServer();
+
+		DefaultHpAlmServlet servlet = new DefaultHpAlmServlet();
+		server.setHpAlmServlet(servlet);
+
+		// use an endpoint which is a little bit slower
+		servlet.setTimeEndpoint(slowTimeEndpoint);
+
+		server.startServer();
+
+		String url = server.getBaseUrl();
+		HpAlmSession session = HpAlmSession.create(url, "DEFAULT", "Test", "test1", "test1234", 5000, 1000);
+
+		long start = System.currentTimeMillis();
+		try {
+			session.determineServerTimeZone();
+			Assert.fail("Expected request timeout, but passed");
+		}
+		catch (SocketTimeoutException e) {
+			// check waiting time
+			long waitTime = System.currentTimeMillis() - start;
+			Assert.assertTrue(waitTime >= 1000 && waitTime < 5000);
+		}
+	}
+
+	// a little bit slower time endpoint
+	private DefaultTimeEndpoint slowTimeEndpoint = new DefaultTimeEndpoint() {
+		@Override
+		public void handle(HttpServletRequest request, ResponseXmlBuilder builder)
+				throws IOException, ServletException, HttpException {
+			try {
+				Thread.sleep(2000);
+			}
+			catch (InterruptedException e) {
+			}
+			super.handle(request, builder);
+		}
+	};
 }

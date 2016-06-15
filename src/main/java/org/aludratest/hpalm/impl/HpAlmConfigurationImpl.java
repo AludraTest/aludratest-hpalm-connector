@@ -91,4 +91,14 @@ public class HpAlmConfigurationImpl implements HpAlmConfiguration {
 		return preferences.getBooleanValue("writeSteps", true);
 	}
 
+	@Override
+	public int getConnectTimeout() {
+		return preferences.getIntValue("connectTimeout", 60000);
+	}
+
+	@Override
+	public int getRequestTimeout() {
+		return preferences.getIntValue("requestTimeout", 60000);
+	}
+
 }

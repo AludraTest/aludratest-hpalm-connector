@@ -39,11 +39,41 @@ public class RestConnector {
 	protected String domain;
 	protected String project;
 
+	/** The HTTP Connect Timeout, in milliseconds. */
+	protected int connectTimeout = 60000;
+
+	/** The HTTP Request Timeout, in milliseconds. */
+	protected int requestTimeout = 60000;
+
 	public RestConnector(Map<String, String> cookies, String serverUrl, String domain, String project) {
 		this.cookies = cookies;
 		this.serverUrl = serverUrl;
 		this.domain = domain;
 		this.project = project;
+	}
+
+	/** Sets the HTTP Connect Timeout.
+	 * @param connectTimeout HTTP Connect Timeout, in milliseconds. */
+	public void setConnectTimeout(int connectTimeout) {
+		this.connectTimeout = connectTimeout;
+	}
+
+	/** Returns the HTTP Connect Timeout.
+	 * @return HTTP Connect Timeout, in milliseconds. */
+	public int getConnectTimeout() {
+		return connectTimeout;
+	}
+
+	/** Sets the HTTP Request Timeout.
+	 * @param requestTimeout HTTP Request Timeout, in milliseconds. */
+	public void setRequestTimeout(int requestTimeout) {
+		this.requestTimeout = requestTimeout;
+	}
+
+	/** Returns the HTTP Request Timeout.
+	 * @return HTTP Request Timeout, in milliseconds. */
+	public int getRequestTimeout() {
+		return requestTimeout;
 	}
 
 	public String buildEntityCollectionUrl(String entityType) {
@@ -106,6 +136,8 @@ public class RestConnector {
 		}
 
 		HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+		con.setConnectTimeout(connectTimeout);
+		con.setReadTimeout(requestTimeout);
 
 		con.setRequestMethod(type);
 		String cookieString = getCookieString();
