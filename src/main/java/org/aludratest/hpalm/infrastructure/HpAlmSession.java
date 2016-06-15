@@ -131,7 +131,7 @@ public class HpAlmSession {
 		writer.endElement();
 
 		response = connector.httpPost(connector.buildUrl("rest/site-session"), sw.toString().getBytes("UTF-8"), XML_POST_HEADERS);
-		if (response.getStatusCode() != HttpStatus.SC_OK) {
+		if (response.getStatusCode() != HttpStatus.SC_OK && response.getStatusCode() != HttpStatus.SC_CREATED) {
 			throw new HpAlmException("Could not start HP ALM Session for user " + userName);
 		}
 
