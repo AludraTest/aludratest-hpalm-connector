@@ -124,6 +124,9 @@ public class HpAlmSessionTest {
 		String url = server.getBaseUrl();
 		HpAlmSession session = HpAlmSession.create(url, "DEFAULT", "Test", "test1", "test1234", 1000, 0);
 		session.determineServerTimeZone();
+
+		session.logout();
+		server.stopServer();
 	}
 
 	@Test
@@ -151,6 +154,8 @@ public class HpAlmSessionTest {
 			long waitTime = System.currentTimeMillis() - start;
 			Assert.assertTrue(waitTime >= 1000 && waitTime < 5000);
 		}
+		session.logout();
+		server.stopServer();
 	}
 
 	// a little bit slower time endpoint
