@@ -149,15 +149,20 @@ public final class HpAlmUtil {
 						+ (testConfigId != null ? "; test-config-id[" + DF_ID.format(testConfigId) + "]" : ""));
 
 		if (testInstances.getTotalCount() == 0 && createIfNotFound) {
-			// determine next free order number
-			testInstances = session.queryEntities("test-instance", "cycle-id[" + DF_ID.format(testSetId) + "]");
-			long maxOrderNo = 0;
-			for (Entity e : testInstances) {
-				maxOrderNo = Math.max(e.getLongFieldValue("test-order"), maxOrderNo);
-			}
+			TestInstanceBuilder builder;
+			// determine next free order number - only required if pre version 12
+			if (session.isPreVersion12()) {
+				testInstances = session.queryEntities("test-instance", "cycle-id[" + DF_ID.format(testSetId) + "]");
+				long maxOrderNo = 0;
+				for (Entity e : testInstances) {
+					maxOrderNo = Math.max(e.getLongFieldValue("test-order"), maxOrderNo);
+				}
 
-			TestInstanceBuilder builder = new TestInstanceBuilder().setTestSetId(testSetId).setTestId(testId)
-					.setOrderNumber(maxOrderNo + 1);
+				builder = new TestInstanceBuilder().setTestSetId(testSetId).setTestId(testId).setOrderNumber(maxOrderNo + 1);
+			}
+			else {
+				builder = new TestInstanceBuilder().setTestSetId(testSetId).setTestId(testId);
+			}
 			if (testConfigId != null) {
 				builder.setTestConfigId(testConfigId.longValue());
 			}

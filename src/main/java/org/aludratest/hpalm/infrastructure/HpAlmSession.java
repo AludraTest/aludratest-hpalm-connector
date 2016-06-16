@@ -57,6 +57,8 @@ public class HpAlmSession {
 
 	private static final Pattern PATTERN_LWSSO_REALM = Pattern.compile("LWSSO realm=\"(http(s?)://[^\"]+)\"");
 
+	private boolean preVersion12;
+
 	static {
 		JSON_ACCEPT_HEADER.put("Accept", "application/json");
 		XML_ACCEPT_HEADER.put("Accept", "application/xml");
@@ -84,8 +86,12 @@ public class HpAlmSession {
 		connector.setConnectTimeout(connectTimeout);
 		connector.setRequestTimeout(requestTimeout);
 
+		// check HP ALM version using api/authentication/sign-in availability
+		Response response = connector.httpGet(connector.buildUrl("api/authentication/sign-in"), null, XML_ACCEPT_HEADER);
+		boolean preVersion12 = response.getStatusCode() == HttpStatus.SC_NOT_FOUND;
+
 		// query is-authenticated
-		Response response = connector.httpGet(connector.buildUrl("rest/is-authenticated"), null, XML_ACCEPT_HEADER);
+		response = connector.httpGet(connector.buildUrl("rest/is-authenticated"), null, XML_ACCEPT_HEADER);
 
 		if (response.getStatusCode() != HttpStatus.SC_UNAUTHORIZED) {
 			throw new HpAlmException("Unexpected HTTP status code during authentication: " + response.getStatusCode());
@@ -150,7 +156,16 @@ public class HpAlmSession {
 
 		connector.getCookies().put(QCESSION_COOKIE_KEY, cookie);
 
-		return new HpAlmSession(connector);
+		HpAlmSession session = new HpAlmSession(connector);
+		session.preVersion12 = preVersion12;
+		return session;
+	}
+
+	/** Returns <code>true</code> if the HP ALM Server is a version lower than 12.0, <code>false</code> otherwise.
+	 * 
+	 * @return <code>true</code> if the HP ALM Server is a version lower than 12.0, <code>false</code> otherwise. */
+	public boolean isPreVersion12() {
+		return preVersion12;
 	}
 
 	public void extendTimeout() throws IOException {
