@@ -176,12 +176,12 @@ public class HpAlmSession {
 		connector.httpGet(connector.buildUrl("authentication-point/logout"), null, XML_ACCEPT_HEADER);
 	}
 
-	// TODO only for testing and debugging
+	// TODO provide better API to access fields information (parse XML into objects)
 	public String getFieldsXml(String entityType, boolean required) throws IOException {
 		Response response = connector.httpGet(
-				connector.buildUrl("rest/domains/DEFAULT/projects/Training_and_Test/customization/entities/" + entityType
-						+ "/fields"), "required=" + required, XML_ACCEPT_HEADER);
-
+				connector.buildUrl("rest/domains/" + connector.domain + "/projects/" + connector.project
+						+ "/customization/entities/" + entityType + "/fields"),
+				"required=" + required, XML_ACCEPT_HEADER);
 		return new String(response.getResponseData(), "UTF-8");
 	}
 
